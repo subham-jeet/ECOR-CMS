@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: "Kanit", sans-serif;
+            color: #0a40e4;
+
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: "Varela Round", sans-serif;
+            color: #0a40e4;
+            border: 2px solid #0a40e4;
+            border-radius: 0.4rem;
+
+        }
+        button:hover{
+            background-color: #0a40e4;
+            color: #fff;
+            transition: 0.4s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0a40e4;
+            color: white;
+        }
+       
+        #total-complaints {
+            background-color: #c17cf1;
+        }
+
+        #total-admins {
+            background-color: #6d83fe;
+        }
+
+        #month-wise-complaints {
+            background-color: #a0fd81;
+        }
+
+        #website-wise-complaints {
+            background-color: #f1ffa1;
+        }
+
+        #closed-complaints {
+            background-color: #ffa1a1;
+        }
+
+        #processing-complaints {
+            background-color: #ffd700;
+        }
+
+        /* Nested tables */
+        #month-wise-table td, #website-wise-table td {
+            border: none;
+            padding: 5px;
+        }
+
+        .date-range {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .date-range label {
+            margin: 0 10px;
+        }
+
+        .date-range input {
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reports</h1>
+        <button onclick="fetchReportData()">Generate Report</button>
+        <div class="date-range">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date">
+            <button onclick="fetchComplaintsByDateRange()">Filter by Date</button>
+        </div>
+        <table id="report-table">
+            <thead>
+                <tr>
+                    <th>Total Complaints</th>
+                    <th>Total Admins</th>
+                    <th>Month-wise Number of Complaints</th>
+                    <th>Website-wise Number of Complaints</th>
+                    <th>Closed Complaints</th>
+                    <th>Processing Complaints</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="total-complaints"></td>
+                    <td id="total-admins"></td>
+                    <td id="month-wise-complaints">
+                        <table id="month-wise-table" style="width: 100%;"></table>
+                    </td>
+                    <td id="website-wise-complaints">
+                        <table id="website-wise-table" style="width: 100%;"></table>
+                    </td>
+                    <td id="closed-complaints"></td>
+                    <td id="processing-complaints"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="date-range-table" style="margin-top: 20px; display: none;">
+            <thead>
+                <tr>
+                    <th>Complaint No</th>
+                    <th>Employee Name</th>
+                    <th>Module</th>
+                    <th>Website</th>
+                    <th>Division</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody id="date-range-complaints">
+                <!-- Complaints within the date range will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function fetchReportData() {
+            try {
+                const totalComplaintsResponse = await fetch('http://localhost:3000/reports/total-complaints');
+                const totalComplaintsData = await totalComplaintsResponse.json();
+                document.getElementById('total-complaints').innerText = totalComplaintsData.totalComplaints;
+
+                const totalAdminsResponse = await fetch('http://localhost:3000/reports/total-admins');
+                const totalAdminsData = await totalAdminsResponse.json();
+                document.getElementById('total-admins').innerText = totalAdminsData.totalAdmins;
+
+                const complaintsByMonthResponse = await fetch('http://localhost:3000/reports/complaints-by-month');
+                const complaintsByMonthData = await complaintsByMonthResponse.json();
+                const monthWiseTable = document.getElementById('month-wise-table');
+                monthWiseTable.innerHTML = ''; // Clear existing rows
+                // Filter out items with null _id
+                const filteredComplaintsByMonth = complaintsByMonthData.filter(item => item._id !== null);
+
+                filteredComplaintsByMonth.forEach(item => {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.innerText = `Month ${item._id}: ${item.count}`;
+                    row.appendChild(cell);
+                    monthWiseTable.appendChild(row);
+                });
+
+                const complaintsByWebsiteResponse = await fetch('http://localhost:3000/reports/complaints-by-website');
+                const complaintsByWebsiteData = await complaintsByWebsiteResponse.json();
+                const websiteWiseTable = document.getElementById('website-wise-table');
+                websiteWiseTable.innerHTML = ''; // Clear existing rows
+                
+                complaintsByWebsiteData.forEach(item => {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.innerText = `${item._id}: ${item.count}`;
+                    row.appendChild(cell);
+                    websiteWiseTable.appendChild(row);
+                });
+
+                const closedComplaintsResponse = await fetch('http://localhost:3000/reports/closed-complaints');
+                const closedComplaintsData = await closedComplaintsResponse.json();
+                document.getElementById('closed-complaints').innerText = closedComplaintsData.totalClosedComplaints;
+
+                const processingComplaintsResponse = await fetch('http://localhost:3000/reports/processing-complaints');
+                const processingComplaintsData = await processingComplaintsResponse.json();
+                document.getElementById('processing-complaints').innerText = processingComplaintsData.totalProcessingComplaints;
+            } catch (error) {
+                console.error('Error fetching report data:', error);
+            }
+        }
+
+        async function fetchComplaintsByDateRange() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/reports/complaints-by-date-range?start=${startDate}&end=${endDate}`);
+                const complaints = await response.json();
+                const dateRangeTable = document.getElementById('date-range-table');
+                const dateRangeComplaints = document.getElementById('date-range-complaints');
+                dateRangeComplaints.innerHTML = ''; // Clear existing rows
+
+                complaints.forEach(complaint => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${complaint.complaintNo}</td>
+                        <td>${complaint.employeeName}</td>
+                        <td>${complaint.module}</td>
+                        <td>${complaint.website}</td>
+                        <td>${complaint.divisionContact}</td>
+                        <td>${complaint.status}</td>
+                        <td>${new Date(complaint.createdAt).toLocaleDateString()}</td>
+                    `;
+                    dateRangeComplaints.appendChild(row);
+                });
+
+                dateRangeTable.style.display = 'table';
+            } catch (error) {
+                console.error('Error fetching complaints by date range:', error);
+            }
+        }
+    </script>
+</body>
+</html>

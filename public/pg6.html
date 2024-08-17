@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox | CMS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 1vw;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            background-color: #fff;
+            padding: 20px;
+            height: 90vh;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            font-family: "Kanit", sans-serif;
+            font-weight: bold;
+            color: #0a40e4;
+        }
+
+        .content {
+            width: 80%;
+            padding: 10px;
+        }
+
+        table {
+            margin-left: 2vw;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #0a40e4;
+            font-family: "Varela Round", sans-serif;
+            color: #fff;
+        }
+        td{
+            background-color: #c1d1ff;
+
+        }
+
+        td a {
+            color: blue;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+        /* Styling for scrollbar */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c1d1ff;
+            border-radius: 6px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #0a40e4;
+            border-radius: 6px;
+            border: 1px solid #0040ff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0040ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Complaints</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Complain No</th>
+                    <th>Complain Desc</th>
+                    <th>Division</th>
+                    <th>Department</th>
+                    <th>Website</th>
+                    <th>Module</th>
+                    <th>Employee Name</th>
+                    <th>Currently With</th>
+                    <th>status</th>
+
+
+                </tr>
+            </thead>
+            <tbody id="complaintsTableBody">
+                <!-- Complaints will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function fetchComplaints() {
+            try {
+                const response = await fetch('/all-complaints');
+                const complaints = await response.json();
+                const tableBody = document.getElementById('complaintsTableBody');
+
+                complaints.forEach(complaint => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><a href="/pg7.html?complaintNo=${complaint.complaintNo}">${complaint.complaintNo}</a></td>
+                        <td>${complaint.description}</td>
+                        <td>${complaint.divisionContact}</td>
+                        <td>${complaint.department}</td>
+                        <td>${complaint.website}</td>
+                        <td>${complaint.module}</td>
+                        <td>${complaint.employeeName}</td>
+                        <td>${complaint.currentAdmin}</td>
+                        <td>${complaint.status}</td>
+
+
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching complaints:', error);
+            }
+        }
+
+        // Fetch complaints when the page loads
+        window.onload = fetchComplaints;
+    </script>
+</body>
+</html>

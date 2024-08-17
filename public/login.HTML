@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>Login | Signup</title>
+</head>
+<body>
+  <div class="form-structor">
+    <div class="signup">
+      <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
+      <div class="form-holder">
+        <form action="/signup" method="POST">
+          <input type="text" name="name" class="input" placeholder="Name" required />
+          <input type="email" name="email" class="input" placeholder="Email" required />
+          <input type="password" name="password" class="input" placeholder="Password" required />
+          <input type="number" name="number" class="input" placeholder="Number" required />
+          <div id="opt">
+          <p>Usertype</p>
+          <select id="usertype" name="usertype" required>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+            <option value="SuperAdmin">SuperAdmin</option>
+          </select>
+        </div>
+          <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+      </div>  
+    </div>
+    <div class="login slide-up">
+      <div class="center">
+        <h2 class="form-title" id="login"><span>or</span>Log in</h2>
+        <div class="form-holder">
+          <form action="/login" method="POST">
+            <input type="email" name="email" class="input" placeholder="Email" required />
+            <input type="password" name="password" class="input" placeholder="Password" required />
+            <button type="submit" class="submit-btn">Log in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="login.js"></script>
+</body>
+</html>

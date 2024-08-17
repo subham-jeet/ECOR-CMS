@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Details | CMS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .content {
+      width: 80%;
+      padding: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      background-color: #c1d1ff;
+      padding: 8px;
+      font-family: "Varela Round", sans-serif;
+    }
+
+    th {
+      background-color: #0a40e4;
+      color: #fff;
+      font-family: "Varela Round", sans-serif;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 8px;
+      background-color: #c1d1ff;
+    }
+    
+    h2 {
+      font-family: "Kanit", sans-serif;
+      color: #0a40e4;
+    }
+
+    h2.status_header {
+      font-size: 40px;
+    }
+
+    p {
+      font-family: "Varela Round", sans-serif;
+    }
+
+    button {
+      padding: 0.5rem;
+      margin-top: 10px;
+      background-color: #0a40e4;
+      color: #fff;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      width: 100px;
+      font-family: "Varela Round", sans-serif;
+      font-weight: bold;
+    }
+
+    #admin-dropdown {
+      margin-bottom: 10px;
+      padding: 5px;
+      width: fit-content;
+      color: white;
+      font-family: "Varela Round", sans-serif;
+      border: 2px solid #0a40e4 ;
+      color: #0a40e4;
+      font-weight: bold;
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c1d1ff;
+            border-radius: 6px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #0a40e4;
+            border-radius: 6px;
+            border: 1px solid #0040ff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0040ff;
+        }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <main>
+      <section class="complaint-form-container">
+        <form class="complaint-form" id="complaint-form">
+          <div class="form-heading">
+            <h2 class="status_header">Complaint Details</h2>
+          </div>
+          <div class="form-content">
+            <div class="form-row">
+              <br>
+              <table border>
+                <tr>
+                  <td>Complaint No</td>
+                  <td id="complaintNo"></td>
+                </tr>
+                <tr>
+                  <td>Complaint desc</td>
+                  <td id="complaintDesc"></td>
+                </tr>
+                <tr>
+                  <td>Website</td>
+                  <td id="complaintWebsite"></td>
+                </tr>
+                <tr>
+                  <td>Module</td>
+                  <td id="complaintModule"></td>
+                </tr>
+                <tr>
+                  <td>Division</td>
+                  <td id="complaintDivision"></td>
+                </tr>
+                <tr>
+                  <td>Employee name</td>
+                  <td id="complaintEmployeeName"></td>
+                </tr>
+                <tr>
+                  <td>Employee no.</td>
+                  <td id="complaintEmployeeNo"></td>
+                </tr>
+                <tr>
+                  <td>Desc</td>
+                  <td id="complaintFullDesc"></td>
+                </tr>
+                <tr>
+                  <td>Reference Document</td>
+                  <td id="complaintReference"></td>
+                </tr>
+              </table>
+              <div style="display: flex; flex-direction: column;">
+                <p>Close<input type="radio" id="Close" name="remark" value="Close"></p>
+                <p>Forward<input type="radio" id="forward" name="remark" value="Forward"></p>
+                <select id="admin-dropdown" style="display: none;">
+                  <option value="">Select Admin</option>
+                </select>
+                <textarea id="remark-text" name="remark" placeholder="Enter remarks here" rows="4" cols="50"></textarea>
+              </div>
+            </div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+        <section class="remarks-container">
+          <h2>Remarks</h2>
+          <table id="remarks-table" border>
+            <thead>
+              <tr>
+                <th>Remark</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Remarks will be dynamically added here -->
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('forward').addEventListener('change', function() {
+      document.getElementById('admin-dropdown').style.display = 'block';
+    });
+
+    document.getElementById('Close').addEventListener('change', function() {
+      document.getElementById('admin-dropdown').style.display = 'none';
+    });
+
+    async function fetchComplaintDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const complaintNo = params.get('complaintNo');
+
+      if (!complaintNo) {
+        alert('No complaint number provided');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/complaints/${complaintNo}`);
+        const complaint = await response.json();
+
+        if (complaint) {
+          document.getElementById('complaintNo').textContent = complaint.complaintNo;
+          document.getElementById('complaintDesc').textContent = complaint.description;
+          document.getElementById('complaintWebsite').textContent = complaint.website;
+          document.getElementById('complaintModule').textContent = complaint.module;
+          document.getElementById('complaintDivision').textContent = complaint.divisionContact;
+          document.getElementById('complaintEmployeeName').textContent = complaint.employeeName;
+          document.getElementById('complaintEmployeeNo').textContent = complaint.employeeNo;
+          document.getElementById('complaintFullDesc').textContent = complaint.description;
+
+          // Handle the reference document link if available
+          if (complaint.reference) {
+            document.getElementById('complaintReference').innerHTML = `<a href="/${complaint.reference}" target="_blank">View Document</a>`;
+          } else {
+            document.getElementById('complaintReference').textContent = 'No document uploaded';
+          }
+
+          // Fetch remarks for this complaint
+          fetchRemarks(complaint.complaintNo); // Use complaintNo for fetching remarks
+        } else {
+          alert('Complaint not found');
+        }
+      } catch (error) {
+        console.error('Error fetching complaint details:', error);
+        alert('Error fetching complaint details');
+      }
+    }
+
+    async function fetchRemarks(complaintNo) {
+      try {
+        const response = await fetch(`/complaints/${complaintNo}/remarks`);
+        const remarks = await response.json();
+
+        const remarksTableBody = document.querySelector('#remarks-table tbody');
+        remarksTableBody.innerHTML = '';
+
+        remarks.forEach(remark => {
+          const row = document.createElement('tr');
+          const remarkCell = document.createElement('td');
+          const timestampCell = document.createElement('td');
+
+          remarkCell.textContent = remark.text;
+          timestampCell.textContent = new Date(remark.createdAt).toLocaleString();
+
+          row.appendChild(remarkCell);
+          row.appendChild(timestampCell);
+
+          remarksTableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error fetching remarks:', error);
+        alert('Error fetching remarks');
+      }
+    }
+
+    async function fetchAdminUsers() {
+      try {
+          const response = await fetch('/admins');
+          const admins = await response.json();
+          const adminDropdown = document.getElementById('admin-dropdown');
+
+          admins.forEach(admin => {
+              const option = document.createElement('option');
+              option.value = admin.name;
+              option.textContent = admin.name;
+              adminDropdown.appendChild(option);
+          });
+      } catch (error) {
+          console.error('Error fetching admin users:', error);
+      }
+    }
+
+    document.getElementById('complaint-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    const complaintNo = params.get('complaintNo');
+
+    if (!complaintNo) {
+        alert('No complaint number provided');
+        return;
+    }
+
+    const remarkText = document.getElementById('remark-text').value;
+    const selectedAdmin = document.getElementById('admin-dropdown').value;
+    const isForward = document.getElementById('forward').checked;
+    const isClose = document.getElementById('Close').checked;
+
+    if (!remarkText) {
+        alert('Please enter a remark');
+        return;
+    }
+
+    const data = {
+        text: remarkText,
+        admin: isForward ? selectedAdmin : ''
+    };
+
+    try {
+        const response = await fetch(`/complaints/${complaintNo}/remarks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            const newRemark = await response.json();
+            const remarksTableBody = document.querySelector('#remarks-table tbody');
+            const row = document.createElement('tr');
+            const remarkCell = document.createElement('td');
+            const timestampCell = document.createElement('td');
+
+            remarkCell.textContent = newRemark.text;
+            timestampCell.textContent = new Date(newRemark.createdAt).toLocaleString();
+
+            row.appendChild(remarkCell);
+            row.appendChild(timestampCell);
+
+            remarksTableBody.appendChild(row);
+            document.getElementById('remark-text').value = '';
+
+            if (isForward && selectedAdmin) {
+                await fetch(`/complaints/${complaintNo}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentAdmin: selectedAdmin,status: 'Forwarded' })
+                });
+
+                alert('Complaint forwarded');
+                    window.location.href = '/pg6.html';
+
+
+            }
+
+            
+
+            if (isClose) {
+                const updateResponse = await fetch(`/complaints/${complaintNo}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'Closed' })
+                });
+
+                if (updateResponse.ok) {
+                    alert('Complaint status updated to Closed');
+                    window.location.href = '/pg8.html';
+                } else {
+                    alert('Failed to update complaint status');
+                }
+            }
+        } else {
+            alert('Failed to submit remark');
+        }
+    } catch (error) {
+        console.error('Error submitting remark:', error);
+        alert('Error submitting remark');
+    }
+});
+
+
+window.onload = function() {
+      fetchComplaintDetails();
+      fetchAdminUsers();
+};
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&family=Varela+Round&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | CMS</title>
+  <link rel="stylesheet" href="pg5.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <img src="https://seeklogo.com/images/I/indian-railways-logo-AF2FECA375-seeklogo.com.png" alt="LOGO" class="logo">
+        <h1>COMPLAIN MANAGEMENT SYSTEM</h1>
+      </div>
+      <div class="user-info">
+        <button class="welcome-btn">Welcome Subham kumar</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+    <main>
+      <div class="dashboard">
+        <nav class="sidebar">
+          <ul>
+            <li id="inbox"><a href="pg6.html" target="adminContent-frame">Inbox</a></li>
+            <li><a href="user.html" target="adminContent-frame">User</a></li>
+            <li><a href="reports.html" target="adminContent-frame">Reports</a></li>
+            <li><a href="pg3.html" target="adminContent-frame">Check Complaint Status</a></li>
+          </ul>
+          <div class="img">
+            <img src="https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-host-and-admin-marketing-job-vacancies-vector-png-image_6480101.png" alt="Admin Image">
+          </div>
+        </nav>
+        <section id="adminContent">
+          <iframe name="adminContent-frame" id="adminContent-frame" src="wlcadmin.html"></iframe>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    function logout() {
+      window.location.href = 'home.html'; // Redirect to the login page
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+      const inboxButton = document.getElementById('inbox');
+      const adminContentFrame = document.getElementById('adminContent-frame');
+  
+      // Check if the iframe loaded 'pg6.html' initially
+      if (adminContentFrame.getAttribute('href') === 'pg6.html') {
+        inboxButton.classList.add('active');
+      }
+      // Function to remove the 'active' class from all links and add it to the current link
+      function setActiveLink(link) {
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+      
+  
+      // Listen for iframe load events
+      adminContentFrame.addEventListener('load', function() {
+        const iframeSrc = adminContentFrame.getAttribute('href');
+        if (iframeSrc === 'pg6.html') {
+          inboxButton.classList.add('active');
+        } else {
+          inboxButton.classList.remove('active');
+        }
+      });
+      // Set initial active link based on iframe src
+      function initializeActiveLink() {
+        const currentSrc = adminContentFrame.getAttribute('src');
+        sidebarLinks.forEach(link => {
+          if (link.getAttribute('href') === currentSrc) {
+            setActiveLink(link);
+          }
+        });
+      }
+      // Call the function to set the initial active link
+      initializeActiveLink();
+
+      // Add event listeners to all sidebar links
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault(); // Prevent default anchor behavior
+          const href = this.getAttribute('href');
+          adminContentFrame.setAttribute('src', href); // Change iframe src
+          setActiveLink(this); // Set the clicked link as active
+        });
+      });
+      // Listen for iframe load events to set the active link
+      adminContentFrame.addEventListener('load', function() {
+        const iframeSrc = adminContentFrame.contentWindow.location.pathname.split('/').pop();
+        sidebarLinks.forEach(link => {
+          if (link.getAttribute('href') === iframeSrc) {
+            setActiveLink(link);
+          }
+        });
+      });
+    });
+  </script>
+  
+</body>
+</html>

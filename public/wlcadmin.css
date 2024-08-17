@@ -1,0 +1,17 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+
+}
+
+h1{
+    font-family: "Kanit", sans-serif;
+    color: #0a40e4;
+    font-size: 5rem;
+
+}
+

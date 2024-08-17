@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raise Complaint</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      /* background-image: url(https://img.freepik.com/free-vector/esports-coaching-abstract-concept-illustration-lessons-with-pro-gamer-free-esport-webinar-player-performance-video-game-training-application-cybersport-team_335657-135.jpg?t=st=1717613787~exp=1717617387~hmac=a033856ed6439d82d113dfd452f3ed44690c4e1bea86bcd390f279341a83b3b8&w=740); */
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    section.complaint-form-container {
+      width: 100%;
+      /* background-color: #f0f0f0d8; */
+      /* border: 1px solid #ccc; */
+      padding: 2rem;
+      border-radius: 4px;
+      margin: 0 ;
+    }
+
+    section.complaint-form-container .form-heading {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1rem;
+    }
+
+    .complaint-form label {
+      font-family: "Varela Round", sans-serif;
+
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-row .form-group {
+      margin-right: 1rem;
+      flex: 1;
+    }
+
+    input[type="text"],
+    select {
+      width: 80%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #c1d1ff;
+    }
+
+    textarea {
+      width: 90%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      height: 150px;
+      background-color: #c1d1ff;
+
+
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      
+    }
+    input#file-upload-button{
+      background-color: #0a40e4;
+    }
+
+    input[type="submit"] {
+      background-color: #0a40e4;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: "Varela Round", sans-serif;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0a40e4;
+    }
+
+    .slide.open {
+      transform: translateX(100%);
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav li {
+      margin-bottom: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: black;
+    }
+
+    #login-btn {
+      background-color: #0a40e4;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      
+
+
+
+    }
+
+    #login-form a {
+      font-size: smaller;
+      text-decoration: none;
+      color: #aaa;
+    }
+
+    #login-form a:hover {
+      color: #97eea0;
+    }
+    h2{
+      font-family: "Kanit", sans-serif;
+      font-size: 33px;
+      color: #0a40e4;
+      margin: 0;
+
+    }
+    
+    #employeeName{
+      margin: 0;
+    }
+    #deslabel{
+      margin-top: 25px;
+    }
+
+    ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #c1d1ff;
+            border-radius: 6px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #0a40e4;
+            border-radius: 6px;
+            border: 1px solid #0040ff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0040ff;
+        }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <main>
+      <section class="complaint-form-container">
+        <form class="complaint-form" method="POST" action="/complaints" enctype="multipart/form-data" onsubmit="return validateForm()">
+          <div class="form-heading">
+            <h2>Raise a Complaint</h2>
+          </div>
+          <div class="form-content">
+            <div class="form-row">
+              <div class="form-group" style="display: flex; flex-direction: row; width: 80%;">
+                <div style="flex: 1;">
+                  <label for="employeeNo">Employee No.:</label>
+                  <input type="text" id="employeeNo" name="employeeNo" maxlength="11" required>
+                </div>
+
+                <div style="flex: 1; margin-left: 1rem;" id="empname">
+                  <label for="employeeName">Employee Name:</label>
+                  <input type="text" id="employeeName" name="employeeName" required>
+                </div>
+
+                <div style="flex: 1; margin-left: 1rem;">
+                  <label for="divisionContact">Division Contact Type:</label>
+                  <select id="divisionContact" name="divisionContact" required>
+                    <option value="HQ">HQ</option>
+                    <option value="KUR">KUR</option>
+                    <option value="SEP">SEP</option>
+                    <option value="WAT">WAT</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" style="display: flex; flex-direction: row; width: 80%;">
+                  <div style="flex: 1; margin-left: 1rem;">
+                    <label for="department">Department:</label>
+                    <select id="department" name="department" required>
+                      <option value="Accounts">Accounts</option>
+                      <option value="Personnel">Personnel</option>
+                      <option value="ENGG">ENGG</option>
+                      <option value="OPTG">OPTG</option>
+                    </select>
+                  </div>
+
+                  <div style="flex: 1; margin-left: 1rem;">
+                    <label for="website">Select Website:</label>
+                    <select id="website" name="website" required>
+                      <option value="IPAS">IPAS</option>
+                      <option value="e-office">E-office</option>
+                      <option value="Sparrow">Sparrow</option>
+                      <option value="east coast website">East Coast Website</option>
+                    </select>
+                  </div>
+
+                  <div style="flex: 1; margin-left: 1rem;">
+                    <label for="module">Module:</label>
+                    <select id="module" name="module" required>
+                      <option value="Quarter">Quarter</option>
+                      <option value="Payroll">Payroll</option>
+                      <option value="Bill Passing">Bill Passing</option>
+                      <option value="Pension">Pension</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <label for="description" id="deslabel">Description:</label><br>
+            <textarea id="description" name="description" rows="10" cols="50" maxlength="2000" required></textarea><br><br>
+
+            <label for="reference">Reference (PDF/JPG):</label><br>
+            <input type="file" id="reference" name="reference" itemid="test"><br><br>
+          </div>
+
+          <input type="submit" value="Submit">
+        </form>
+      </section>
+    </main>
+  </div>
+  
+  <script>
+    function validateEmployeeNo(employeeNo) {
+      const regex = /^[a-zA-Z0-9]{11}$/;
+      return regex.test(employeeNo);
+    }
+
+    function validateForm() {
+      const employeeNo = document.getElementById('employeeNo').value;
+      if (!validateEmployeeNo(employeeNo)) {
+        alert('Invalid Employee Number! It should be 11 alphanumeric characters without spaces or special symbols.');
+        return false; // Prevent form submission
+      }
+      return true; // Allow form submission
+    }
+  </script>
+</body>
+</html>
